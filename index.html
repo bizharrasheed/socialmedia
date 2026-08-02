@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ناوەندا پەیوەندیان 3D</title>
+    
+    <!-- ڕێکخستنێن PWA و مۆبایلێ -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#25D366" id="themeColorMeta">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- ڕێکخستنێن ئایفۆنێ iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="پەیوەندی 3D">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- خەتا سەری یا تەمام ل سەرەوە -->
+        <div class="top-bar" id="topBar"></div>
+        
+        <!-- لیستا پلاتفۆرمان ب ئیفێکتا 3D -->
+        <div class="platform-selector" id="platformSelector">
+            <!-- ب ڕێیا جاڤاسکریپتی دێ هێنە دروستکرن -->
+        </div>
+
+        <!-- لۆگۆیا سەرەکی دگەل ئیفێکتا 3D Flip -->
+        <div class="logo-container">
+            <div class="logo-circle" id="mainLogoCircle">
+                <div id="mainIconContainer"></div>
+            </div>
+        </div>
+
+        <h1 id="mainTitle">واتسئاپ</h1>
+        <p id="mainDesc">ژمارێ بنڤیسە بێی سەیڤکرن، ڕاستەوخۆ دێ چات ڤەبیت.</p>
+        
+        <div class="form-container">
+            <!-- بەشێ ژمارا مۆبایلێ -->
+            <div id="phoneInputSection">
+                <div class="row">
+                    <div class="input-box select-box">
+                        <select id="countrySelect"></select>
+                    </div>
+                    <div class="input-box code-box" dir="ltr">
+                        <span class="plus-sign" id="plusSign">+</span>
+                        <input type="tel" id="countryCodeInput" placeholder="964">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-box phone-box" dir="ltr" id="phoneGroup">
+                        <input type="tel" id="phoneInput" placeholder="750 000 0000" autocomplete="off">
+                    </div>
+                    <span class="error-msg" id="phoneErrorMsg">هیڤییە ژمارەیەکا دروست بنڤیسە!</span>
+                </div>
+            </div>
+
+            <!-- بەشێ یوزەرنەیم و ئیمێلێ -->
+            <div id="textInputSection" style="display: none;">
+                <div class="row">
+                    <div class="input-box phone-box" dir="ltr" id="textGroup">
+                        <input type="text" id="textInput" placeholder="username" autocomplete="off">
+                    </div>
+                    <span class="error-msg" id="textErrorMsg">هیڤییە پێزانینان بنڤیسە!</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- دوگمەیێ 3D -->
+        <button class="btn-submit" id="submitBtn">
+            <span id="btnText">ڤەکرنا چاتێ</span>
+            <svg viewBox="0 0 24 24" id="btnIcon">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed: ', err));
+            });
+        }
+    </script>
+</body>
+</html>
