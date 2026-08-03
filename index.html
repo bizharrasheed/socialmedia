@@ -10,28 +10,33 @@
     <meta name="theme-color" content="#25D366" id="themeColorMeta">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <!-- ڕێکخستنێن ئایفۆنێ iOS -->
+    <!-- ڕێکخستنێن ئایفۆنێ iOS و ئایکۆنێ نوی -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="پەیوەندی 3D">
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/FHNCZRbx/7C5085D4-2C87-4EE0-B89A-B5C6BBFADA74.jpg">
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="app-container">
-        <!-- خەتا سەری یا تەمام ل سەرەوە -->
+        <!-- خەتا سەری یا تەمام -->
         <div class="top-bar" id="topBar"></div>
         
-        <!-- لیستا پلاتفۆرمان ب ئیفێکتا 3D -->
-        <div class="platform-selector" id="platformSelector">
-            <!-- ب ڕێیا جاڤاسکریپتی دێ هێنە دروستکرن -->
+        <!-- ئامرازێ زڤڕاندنێ وەکی ڤۆلیۆمی (3D Dial) -->
+        <div class="dial-container" id="dialContainer">
+            <div class="dial-wheel" id="dialWheel">
+                <!-- دێ ب ڕێیا JS هێنە دروستکرن -->
+            </div>
         </div>
 
-        <!-- لۆگۆیا سەرەکی دگەل ئیفێکتا 3D Flip -->
+        <!-- لۆگۆیا سەرەکی دگەل پەقیشکان و ئیفێکتا 3D Flip -->
         <div class="logo-container">
             <div class="logo-circle" id="mainLogoCircle">
+                <!-- ژوورا پەقیشکان -->
+                <div class="bubbles-container" id="bubblesContainer"></div>
+                <!-- ئایکۆن -->
                 <div id="mainIconContainer"></div>
             </div>
         </div>
@@ -40,7 +45,6 @@
         <p id="mainDesc">ژمارێ بنڤیسە بێی سەیڤکرن، ڕاستەوخۆ دێ چات ڤەبیت.</p>
         
         <div class="form-container">
-            <!-- بەشێ ژمارا مۆبایلێ -->
             <div id="phoneInputSection">
                 <div class="row">
                     <div class="input-box select-box">
@@ -59,7 +63,6 @@
                 </div>
             </div>
 
-            <!-- بەشێ یوزەرنەیم و ئیمێلێ -->
             <div id="textInputSection" style="display: none;">
                 <div class="row">
                     <div class="input-box phone-box" dir="ltr" id="textGroup">
@@ -70,13 +73,18 @@
             </div>
         </div>
         
-        <!-- دوگمەیێ 3D -->
         <button class="btn-submit" id="submitBtn">
             <span id="btnText">ڤەکرنا چاتێ</span>
             <svg viewBox="0 0 24 24" id="btnIcon">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
             </svg>
         </button>
+
+        <!-- ناڤێ تە ب دیزاینا RGB -->
+        <div class="footer">
+            Development By : 
+            <a href="https://bizhar-cloud.github.io/BizharRasheed/" target="_blank" class="rgb-text">Bizhar Rasheed</a>
+        </div>
     </div>
 
     <script src="script.js"></script>
@@ -89,3 +97,4 @@
     </script>
 </body>
 </html>
+
