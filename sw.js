@@ -1,11 +1,10 @@
-const CACHE_NAME = "social-hub-3d-v3";
+const CACHE_NAME = "social-hub-3d-v4";
 const assets = [
   "./",
   "./index.html",
   "./style.css",
   "./script.js",
-  "./manifest.json",
-  "./icon.png"
+  "./manifest.json"
 ];
 
 self.addEventListener("install", installEvent => {
