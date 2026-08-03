@@ -1,4 +1,4 @@
-const CACHE_NAME = "social-hub-3d-v4";
+const CACHE_NAME = "social-hub-rain-v5";
 const assets = [
   "./",
   "./index.html",
