@@ -1,6 +1,3 @@
-/* =========================================
-   CSS: دیزاینا 3D و مۆدێرن
-========================================= */
 :root {
     --theme-main: #25D366;
     --theme-dark: #128C7E;
@@ -36,14 +33,13 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-/* کارتێ سەرەکی یێ ئەپلیکەیشنی */
 .app-container {
     background: var(--card-bg);
     width: 100%;
     max-width: 460px;
-    min-height: 90vh; /* دکەت کو شاشە زێدەتر بێتە تژیکرن */
+    min-height: 95vh; 
     border-radius: 30px;
-    padding: 35px 25px;
+    padding: 35px 25px 20px 25px; /* کێمکرنا پادینگێ خوارێ بۆ فوتەری */
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1), 0 10px 15px rgba(0, 0, 0, 0.05);
     text-align: center;
     position: relative;
@@ -53,7 +49,6 @@ body {
     justify-content: center;
 }
 
-/* خەتا سەری یا تەمام و درێژ ل سەرەوەی شاشێ */
 .top-bar {
     position: absolute;
     top: 0;
@@ -72,64 +67,73 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* هەلبژاردنا پلاتفۆرمان دگەل ئیفێکتا 3D */
-.platform-selector {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 20px 0 35px 0;
-    background: #f8f9fa;
-    padding: 12px;
-    border-radius: 20px;
-    overflow-x: auto;
-    gap: 12px;
-    box-shadow: inset 0 3px 6px rgba(0,0,0,0.04);
-}
-
-.platform-selector::-webkit-scrollbar { display: none; }
-
-.platform-btn {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    width: 50px;
-    height: 50px;
+/* =========================================
+   دیزاینا زڤڕۆکێ 3D (Volume Dial)
+========================================= */
+.dial-container {
+    width: 100%;
+    height: 90px;
+    perspective: 1200px; /* کریتیکال بۆ 3D */
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    flex-shrink: 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 15px 0 30px 0;
+    overflow: hidden;
+    /* ئیفێکتا کاڵبوونێ بۆ ڕەخێن ڕاست و چەپ */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
+    touch-action: pan-y; /* ڕێگەدان بتنێ ب سکرۆلا ژۆر و خوار */
 }
 
-.platform-btn svg {
-    width: 26px;
-    height: 26px;
+.dial-wheel {
+    width: 55px;
+    height: 55px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.dial-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 55px;
+    height: 55px;
+    background: #ffffff;
+    border: 2px solid #e5e7eb;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    cursor: pointer;
+    backface-visibility: hidden; /* ڤەشارتنا پشتێ */
+    transition: border-color 0.4s, box-shadow 0.4s;
+}
+
+.dial-item svg {
+    width: 28px;
+    height: 28px;
     fill: #9ca3af;
     transition: all 0.4s ease;
 }
 
-.platform-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-}
-
-.platform-btn.active {
-    background: var(--theme-main);
+.dial-item.active {
     border-color: var(--theme-main);
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 12px 20px var(--theme-shadow);
+    box-shadow: 0 10px 25px var(--theme-shadow);
 }
 
-.platform-btn.active svg {
-    fill: var(--text-on-theme);
+.dial-item.active svg {
+    fill: var(--theme-main);
 }
 
-/* لۆگۆیا سەرەکی و ئەنیمەیشنا 3D */
+/* =========================================
+   لۆگۆیا سەرەکی و پەقیشک
+========================================= */
 .logo-container {
-    perspective: 1000px; /* پێدڤییە بۆ ئیفێکتا 3D */
+    perspective: 1000px; 
     margin-bottom: 20px;
+    z-index: 10;
 }
 
 .logo-circle {
@@ -143,6 +147,7 @@ body {
     margin: 0 auto;
     box-shadow: 0 15px 35px var(--theme-shadow), inset 0 -5px 15px rgba(0,0,0,0.2);
     transition: all 0.6s ease;
+    position: relative; /* پێدڤییە بۆ پەقیشکان */
 }
 
 .logo-circle svg {
@@ -150,9 +155,37 @@ body {
     height: 45px;
     fill: var(--text-on-theme);
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+    position: relative;
+    z-index: 5;
 }
 
-/* کلاسا 3D Flip بۆ دەمێ گوهارتنا لۆگۆی */
+/* ئەنیمەیشنا پەقیشکان */
+.bubbles-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 2;
+}
+
+.bubble {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    opacity: 0;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+    animation: bubbleRise linear forwards;
+}
+
+@keyframes bubbleRise {
+    0% { transform: translate(-50%, 0) scale(0.2); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translate(calc(-50% + var(--dx)), -90px) scale(1.8); opacity: 0; }
+}
+
 .flip-3d {
     animation: flipEffect 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 }
@@ -174,23 +207,21 @@ h1 {
 p {
     color: var(--text-gray);
     font-size: 15px;
-    margin: 0 0 30px 0;
+    margin: 0 0 25px 0;
     line-height: 1.6;
 }
 
-/* دیزاینا لاکێشەیان (3D Inset) */
+/* =========================================
+   دیزاینا فۆرم و دوگمە
+========================================= */
 .form-container {
     display: flex;
     flex-direction: column;
     gap: 18px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
-.row {
-    display: flex;
-    gap: 12px;
-    position: relative;
-}
+.row { display: flex; gap: 12px; position: relative; }
 
 .input-box {
     background: #f4f5f7;
@@ -199,7 +230,7 @@ p {
     display: flex;
     align-items: center;
     transition: all 0.3s ease;
-    box-shadow: inset 0 3px 5px rgba(0,0,0,0.05); /* هەستێ چوونەناڤێ */
+    box-shadow: inset 0 3px 5px rgba(0,0,0,0.05);
     overflow: hidden;
 }
 
@@ -211,15 +242,8 @@ p {
 
 .select-box { flex: 2; }
 select {
-    width: 100%;
-    padding: 16px 12px;
-    border: none;
-    background: transparent;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text-dark);
-    outline: none;
-    cursor: pointer;
+    width: 100%; padding: 16px 12px; border: none; background: transparent;
+    font-size: 16px; font-weight: 700; color: var(--text-dark); outline: none; cursor: pointer;
 }
 
 .code-box { flex: 1; padding: 0 10px; justify-content: center; }
@@ -227,36 +251,14 @@ select {
 .code-box input { width: 100%; border: none; background: transparent; padding: 16px 5px; font-size: 18px; font-weight: 700; color: var(--text-dark); outline: none; }
 
 .phone-box { width: 100%; }
-.phone-box input {
-    width: 100%;
-    border: none;
-    background: transparent;
-    padding: 18px;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-dark);
-    outline: none;
-    letter-spacing: 1.5px;
-}
+.phone-box input { width: 100%; border: none; background: transparent; padding: 18px; font-size: 20px; font-weight: 700; color: var(--text-dark); outline: none; letter-spacing: 1.5px; }
 
-/* دیزاینا خەلەتیێ ب لەرزین */
 .error-msg {
-    color: var(--error-color);
-    font-size: 13px;
-    font-weight: 700;
-    position: absolute;
-    bottom: -22px;
-    left: 0;
-    right: 0;
-    opacity: 0;
-    transition: opacity 0.3s;
+    color: var(--error-color); font-size: 13px; font-weight: 700;
+    position: absolute; bottom: -22px; left: 0; right: 0; opacity: 0; transition: opacity 0.3s;
 }
 
-.input-box.error {
-    border-color: var(--error-color);
-    background: #fff0f0;
-    animation: shake3D 0.5s ease-in-out;
-}
+.input-box.error { border-color: var(--error-color); background: #fff0f0; animation: shake3D 0.5s ease-in-out; }
 .input-box.error ~ .error-msg { opacity: 1; }
 
 @keyframes shake3D {
@@ -266,39 +268,44 @@ select {
     75% { transform: translateX(-6px) rotate(-1deg); }
 }
 
-/* دوگمەیێ 3D یێ سەرەکی */
 .btn-submit {
     background: linear-gradient(135deg, var(--theme-main), var(--theme-dark));
     color: var(--text-on-theme);
-    border: none;
-    width: 100%;
-    padding: 18px;
-    font-size: 20px;
-    font-weight: 900;
-    border-radius: 18px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
+    border: none; width: 100%; padding: 18px; font-size: 20px; font-weight: 900;
+    border-radius: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 12px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 10px 25px var(--theme-shadow), inset 0 -4px 10px rgba(0,0,0,0.15);
 }
 
-.btn-submit:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 15px 35px var(--theme-shadow), inset 0 -4px 10px rgba(0,0,0,0.2);
-}
-
-.btn-submit:active {
-    transform: translateY(2px) scale(0.98);
-    box-shadow: 0 5px 15px var(--theme-shadow);
-}
-
-.btn-submit svg {
-    width: 24px;
-    height: 24px;
-    fill: var(--text-on-theme);
-    transition: transform 0.4s ease;
-}
+.btn-submit:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 35px var(--theme-shadow), inset 0 -4px 10px rgba(0,0,0,0.2); }
+.btn-submit:active { transform: translateY(2px) scale(0.98); box-shadow: 0 5px 15px var(--theme-shadow); }
+.btn-submit svg { width: 24px; height: 24px; fill: var(--text-on-theme); transition: transform 0.4s ease; }
 .btn-submit:hover svg { transform: translateX(-6px) scale(1.1); }
+
+/* =========================================
+   فوتەرێ ل خوارێ (RGB Text)
+========================================= */
+.footer {
+    margin-top: auto;
+    padding-top: 25px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-gray);
+}
+
+.rgb-text {
+    background: linear-gradient(270deg, #ff0000, #ff7f00, #eed202, #00ff00, #0000ff, #4b0082, #9400d3, #ff0000);
+    background-size: 800% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbowAnim 5s linear infinite;
+    font-weight: 900;
+    text-decoration: none;
+    font-size: 15px;
+    margin-right: 5px;
+}
+
+@keyframes rainbowAnim {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
