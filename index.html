@@ -3,40 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ناوەندا پەیوەندیان 3D</title>
+    <title>ناوەندا پەیوەندیان - دیزاینا زیندی</title>
     
-    <!-- ڕێکخستنێن PWA و مۆبایلێ -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#25D366" id="themeColorMeta">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <!-- ڕێکخستنێن ئایفۆنێ iOS و ئایکۆنێ نوی -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="پەیوەندی 3D">
+    <!-- لینکا ئایکۆنێ تە -->
     <link rel="apple-touch-icon" href="https://i.postimg.cc/FHNCZRbx/7C5085D4-2C87-4EE0-B89A-B5C6BBFADA74.jpg">
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- ئیفێکتا بارانا ئایکۆنان ل پشتەوە -->
+    <div class="rain-container" id="rainContainer"></div>
+
     <div class="app-container">
         <!-- خەتا سەری یا تەمام -->
         <div class="top-bar" id="topBar"></div>
         
-        <!-- ئامرازێ زڤڕاندنێ وەکی ڤۆلیۆمی (3D Dial) -->
-        <div class="dial-container" id="dialContainer">
-            <div class="dial-wheel" id="dialWheel">
-                <!-- دێ ب ڕێیا JS هێنە دروستکرن -->
-            </div>
+        <!-- لیستا ئایکۆنان وەک یا بەرێ (لیستا ئاسۆیی) -->
+        <div class="platform-selector" id="platformSelector">
+            <!-- ب ڕێیا JS دێ هێنە دروستکرن -->
         </div>
 
         <!-- لۆگۆیا سەرەکی دگەل پەقیشکان و ئیفێکتا 3D Flip -->
         <div class="logo-container">
             <div class="logo-circle" id="mainLogoCircle">
-                <!-- ژوورا پەقیشکان -->
                 <div class="bubbles-container" id="bubblesContainer"></div>
-                <!-- ئایکۆن -->
                 <div id="mainIconContainer"></div>
             </div>
         </div>
@@ -97,4 +95,3 @@
     </script>
 </body>
 </html>
-
