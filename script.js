@@ -71,9 +71,9 @@ const platformsData = {
     }
 };
 
-const dialContainer = document.getElementById("dialContainer");
-const dialWheel = document.getElementById("dialWheel");
+let activePlatform = 'whatsapp';
 
+const platformSelector = document.getElementById("platformSelector");
 const mainLogoCircle = document.getElementById("mainLogoCircle");
 const mainIconContainer = document.getElementById("mainIconContainer");
 const mainTitle = document.getElementById("mainTitle");
@@ -84,7 +84,6 @@ const plusSign = document.getElementById("plusSign");
 
 const phoneInputSection = document.getElementById("phoneInputSection");
 const textInputSection = document.getElementById("textInputSection");
-
 const countrySelect = document.getElementById("countrySelect");
 const countryCodeInput = document.getElementById("countryCodeInput");
 const phoneInput = document.getElementById("phoneInput");
@@ -93,73 +92,21 @@ const phoneGroup = document.getElementById("phoneGroup");
 const textGroup = document.getElementById("textGroup");
 const submitBtn = document.getElementById("submitBtn");
 
-let activePlatform = 'whatsapp';
-let currentAngle = 0;
-const platformKeys = Object.keys(platformsData);
-const numPlats = platformKeys.length;
-const angleStep = 360 / numPlats;
-const radius = 95; // پێوەرا دوریا 3D
-
-// 1. ڕێکخستنا تایەیێ ڤۆلیۆمی 3D
-function setupDial() {
-    platformKeys.forEach((key, index) => {
-        let plat = platformsData[key];
-        let item = document.createElement("div");
-        item.className = "dial-item";
-        if (plat.id === activePlatform) item.classList.add("active");
-        item.innerHTML = `<svg viewBox="0 0 24 24">${plat.svg}</svg>`;
-        
-        item.style.transform = `rotateY(${index * angleStep}deg) translateZ(${radius}px)`;
-        
-        item.onclick = () => snapToPlatform(index);
-        dialWheel.appendChild(item);
+// 1. دانانا لیستا ئاسۆیی یا پلاتفۆرمان
+function setupPlatforms() {
+    Object.values(platformsData).forEach(plat => {
+        let btn = document.createElement("button");
+        btn.className = "platform-btn";
+        if (plat.id === activePlatform) btn.classList.add("active");
+        btn.innerHTML = `<svg viewBox="0 0 24 24">${plat.svg}</svg>`;
+        btn.onclick = () => switchPlatform(plat.id, btn);
+        platformSelector.appendChild(btn);
     });
 }
 
-function snapToPlatform(index) {
-    let targetAngle = -(index * angleStep);
-    let diff = (targetAngle - currentAngle) % 360;
-    if (diff < -180) diff += 360;
-    if (diff > 180) diff -= 360;
-    currentAngle += diff;
-
-    dialWheel.style.transform = `rotateY(${currentAngle}deg)`;
-    switchPlatform(platformKeys[index], index);
-}
-
-// 2. لۆژیکا لڤین و سکرۆلکرنا ب دەستی (Touch/Drag) بۆ ڤۆلیۆمی
-let startX = 0, currentRot = 0, isDragging = false;
-dialContainer.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-    isDragging = true;
-    currentRot = currentAngle;
-    dialWheel.style.transition = "none";
-}, {passive: true});
-
-dialContainer.addEventListener("touchmove", e => {
-    if (!isDragging) return;
-    let dx = e.touches[0].clientX - startX;
-    dialWheel.style.transform = `rotateY(${currentRot + dx * 0.8}deg)`; // 0.8 بۆ کۆنترۆلا لزگینیێ
-}, {passive: false});
-
-dialContainer.addEventListener("touchend", e => {
-    if (!isDragging) return;
-    isDragging = false;
-    dialWheel.style.transition = "transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28)";
-
-    let endX = e.changedTouches[0].clientX;
-    let actualAngle = currentRot + (endX - startX) * 0.8;
-    
-    // دۆزینەوەیا نێزیکترین ئایکۆن
-    let index = Math.round(-actualAngle / angleStep);
-    index = ((index % numPlats) + numPlats) % numPlats;
-
-    snapToPlatform(index);
-});
-
-// 3. فرمانا گۆڕینا پلاتفۆرمی و کارپێکرنا ئەنیمەیشنا 3D و ڕەنگان
-function switchPlatform(platId, activeIndex) {
-    if(activePlatform === platId && !isDragging) return; 
+// 2. گۆڕینا پلاتفۆرمی و لڤین
+function switchPlatform(platId, btnElement) {
+    if(activePlatform === platId) return; 
     activePlatform = platId;
     const plat = platformsData[platId];
 
@@ -171,10 +118,8 @@ function switchPlatform(platId, activeIndex) {
     themeColorMeta.setAttribute("content", plat.colors.main);
     plusSign.style.color = plat.colors.main;
 
-    Array.from(dialWheel.children).forEach((child, i) => {
-        if(i === activeIndex) child.classList.add("active");
-        else child.classList.remove("active");
-    });
+    document.querySelectorAll(".platform-btn").forEach(b => b.classList.remove("active"));
+    btnElement.classList.add("active");
 
     mainLogoCircle.classList.remove("flip-3d");
     void mainLogoCircle.offsetWidth; 
@@ -199,26 +144,52 @@ function switchPlatform(platId, activeIndex) {
     }
 }
 
+// 3. لۆژیکا بارانێ (Rain Effect)
+function spawnRain() {
+    const container = document.getElementById("rainContainer");
+    if (!container) return;
+    
+    const plat = platformsData[activePlatform];
+    const icon = document.createElement("div");
+    icon.className = "rain-icon";
+    icon.innerHTML = `<svg viewBox="0 0 24 24">${plat.svg}</svg>`;
+    
+    // ب شێوەیەکێ هەڕەمەکی (Random) دروستکرنا بارانێ
+    const size = Math.random() * 25 + 15; // 15px تا 40px
+    const left = Math.random() * 95; // 0% تا 95%
+    const duration = Math.random() * 4 + 4; // 4 چرکە تا 8 چرکە (دا خاڤ بیت)
+    const delay = Math.random() * 2;
+    
+    icon.style.width = `${size}px`;
+    icon.style.height = `${size}px`;
+    icon.style.left = `${left}%`;
+    icon.style.animationDuration = `${duration}s`;
+    icon.style.animationDelay = `${delay}s`;
+    
+    container.appendChild(icon);
+    
+    // ڕەشکرنا ئایکۆنی پشتی گەهشتیە بنێ شاشێ
+    setTimeout(() => icon.remove(), (duration + delay) * 1000);
+}
+setInterval(spawnRain, 400); // هەر 400 ملی‌چرکە دڵۆپەکا بارانێ چێدکەت
+
 // 4. ئەنیمەیشنا پەقیشکێن ئاڤێ ب بەردەوامی
 function spawnBubbles() {
     const container = document.getElementById("bubblesContainer");
     if (!container) return;
     const bubble = document.createElement("div");
     bubble.className = "bubble";
-    
-    // قەبارە و ئاراستەیێ هەڕەمەکی
     let size = Math.random() * 8 + 4;
     bubble.style.width = `${size}px`;
     bubble.style.height = `${size}px`;
     bubble.style.setProperty('--dx', `${(Math.random() - 0.5) * 60}px`);
     bubble.style.animationDuration = `${1 + Math.random() * 0.8}s`;
-
     container.appendChild(bubble);
     setTimeout(() => bubble.remove(), 1800);
 }
-setInterval(spawnBubbles, 250); // هەر 250 ملی‌چرکە پەقیشکەک دەردکەڤیت
+setInterval(spawnBubbles, 250); 
 
-// 5. کارێن داتایێن لاکێشێ
+// 5. کارێن داتایێن لاکێشێ و وەلاتان
 function populateCountries() {
     countries.forEach(country => {
         let option = document.createElement("option");
@@ -277,7 +248,7 @@ phoneInput.addEventListener("keypress", e => { if (e.key === "Enter") executeAct
 textInput.addEventListener("keypress", e => { if (e.key === "Enter") executeAction(); });
 
 window.onload = () => {
-    setupDial();
+    setupPlatforms();
     populateCountries();
     mainIconContainer.innerHTML = `<svg viewBox="0 0 24 24">${platformsData['whatsapp'].svg}</svg>`;
 };
