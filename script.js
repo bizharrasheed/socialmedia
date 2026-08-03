@@ -1,4 +1,3 @@
-// داتابەیسێ وەلاتان
 const countries = [
     { code: "964", name: "عێراق", flag: "🇮🇶" },
     { code: "1", name: "ئەمریکا / کەنەدا", flag: "🇺🇸" },
@@ -15,7 +14,6 @@ const countries = [
     { code: "unknown", name: "وەلاتەکێ دی...", flag: "🌍" }
 ];
 
-// داتابەیسێ پلاتفۆرمان (دگەل ڕەنگێن فەرمی یێن براندان)
 const platformsData = {
     whatsapp: {
         id: "whatsapp", name: "واتسئاپ", type: "phone", baseUrl: "https://api.whatsapp.com/send/?phone=",
@@ -37,7 +35,7 @@ const platformsData = {
     },
     instagram: {
         id: "instagram", name: "ئینستگرام", type: "text", baseUrl: "https://www.instagram.com/",
-        desc: "یوزەرنەیمی بنڤیسە بۆ ڤەکرنا پرۆفایلێ ئینستگرامی.", placeholder: "username", btnText: "ڤەکرنا پرۆفایلی",
+        desc: "یوزەرنەیمی بنڤیسە بۆ ڤەکرنا پرۆفایلی ئینستگرامی.", placeholder: "username", btnText: "ڤەکرنا پرۆفایلی",
         colors: { main: "#E1306C", dark: "#F56040", light: "rgba(225, 48, 108, 0.15)", shadow: "rgba(225, 48, 108, 0.4)" },
         svg: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>'
     },
@@ -73,9 +71,9 @@ const platformsData = {
     }
 };
 
-let activePlatform = 'whatsapp';
+const dialContainer = document.getElementById("dialContainer");
+const dialWheel = document.getElementById("dialWheel");
 
-const platformSelector = document.getElementById("platformSelector");
 const mainLogoCircle = document.getElementById("mainLogoCircle");
 const mainIconContainer = document.getElementById("mainIconContainer");
 const mainTitle = document.getElementById("mainTitle");
@@ -95,45 +93,93 @@ const phoneGroup = document.getElementById("phoneGroup");
 const textGroup = document.getElementById("textGroup");
 const submitBtn = document.getElementById("submitBtn");
 
-// دروستکرنا دوگمەیێن پلاتفۆرمان ب شێوەیێ زیندی
-function setupPlatforms() {
-    Object.values(platformsData).forEach(plat => {
-        let btn = document.createElement("button");
-        btn.className = "platform-btn";
-        if (plat.id === activePlatform) btn.classList.add("active");
-        btn.innerHTML = `<svg viewBox="0 0 24 24">${plat.svg}</svg>`;
-        btn.onclick = () => switchPlatform(plat.id, btn);
-        platformSelector.appendChild(btn);
+let activePlatform = 'whatsapp';
+let currentAngle = 0;
+const platformKeys = Object.keys(platformsData);
+const numPlats = platformKeys.length;
+const angleStep = 360 / numPlats;
+const radius = 95; // پێوەرا دوریا 3D
+
+// 1. ڕێکخستنا تایەیێ ڤۆلیۆمی 3D
+function setupDial() {
+    platformKeys.forEach((key, index) => {
+        let plat = platformsData[key];
+        let item = document.createElement("div");
+        item.className = "dial-item";
+        if (plat.id === activePlatform) item.classList.add("active");
+        item.innerHTML = `<svg viewBox="0 0 24 24">${plat.svg}</svg>`;
+        
+        item.style.transform = `rotateY(${index * angleStep}deg) translateZ(${radius}px)`;
+        
+        item.onclick = () => snapToPlatform(index);
+        dialWheel.appendChild(item);
     });
 }
 
-// فرمانا گۆڕینا پلاتفۆرمی و کارپێکرنا ئەنیمەیشنا 3D
-function switchPlatform(platId, btnElement) {
-    if(activePlatform === platId) return; // ئەگەر هەمان بیت نەگۆڕە
+function snapToPlatform(index) {
+    let targetAngle = -(index * angleStep);
+    let diff = (targetAngle - currentAngle) % 360;
+    if (diff < -180) diff += 360;
+    if (diff > 180) diff -= 360;
+    currentAngle += diff;
+
+    dialWheel.style.transform = `rotateY(${currentAngle}deg)`;
+    switchPlatform(platformKeys[index], index);
+}
+
+// 2. لۆژیکا لڤین و سکرۆلکرنا ب دەستی (Touch/Drag) بۆ ڤۆلیۆمی
+let startX = 0, currentRot = 0, isDragging = false;
+dialContainer.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+    currentRot = currentAngle;
+    dialWheel.style.transition = "none";
+}, {passive: true});
+
+dialContainer.addEventListener("touchmove", e => {
+    if (!isDragging) return;
+    let dx = e.touches[0].clientX - startX;
+    dialWheel.style.transform = `rotateY(${currentRot + dx * 0.8}deg)`; // 0.8 بۆ کۆنترۆلا لزگینیێ
+}, {passive: false});
+
+dialContainer.addEventListener("touchend", e => {
+    if (!isDragging) return;
+    isDragging = false;
+    dialWheel.style.transition = "transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28)";
+
+    let endX = e.changedTouches[0].clientX;
+    let actualAngle = currentRot + (endX - startX) * 0.8;
+    
+    // دۆزینەوەیا نێزیکترین ئایکۆن
+    let index = Math.round(-actualAngle / angleStep);
+    index = ((index % numPlats) + numPlats) % numPlats;
+
+    snapToPlatform(index);
+});
+
+// 3. فرمانا گۆڕینا پلاتفۆرمی و کارپێکرنا ئەنیمەیشنا 3D و ڕەنگان
+function switchPlatform(platId, activeIndex) {
+    if(activePlatform === platId && !isDragging) return; 
     activePlatform = platId;
     const plat = platformsData[platId];
 
-    // گۆڕینا ڕەنگێن سیستەمی ب نەرمی
     document.documentElement.style.setProperty('--theme-main', plat.colors.main);
     document.documentElement.style.setProperty('--theme-dark', plat.colors.dark);
     document.documentElement.style.setProperty('--theme-light', plat.colors.light);
     document.documentElement.style.setProperty('--theme-shadow', plat.colors.shadow);
-    
-    // ئەگەر سناپچات بیت، ڕەنگێ تێکستی دناڤ دا بلا ڕەش بیت کو جوانترە
     document.documentElement.style.setProperty('--text-on-theme', platId === 'snapchat' ? '#000000' : '#ffffff');
     themeColorMeta.setAttribute("content", plat.colors.main);
     plusSign.style.color = plat.colors.main;
 
-    // دیارکرنا دوگمەیێ چالاک د لیستێ دا
-    document.querySelectorAll(".platform-btn").forEach(b => b.classList.remove("active"));
-    btnElement.classList.add("active");
+    Array.from(dialWheel.children).forEach((child, i) => {
+        if(i === activeIndex) child.classList.add("active");
+        else child.classList.remove("active");
+    });
 
-    // پێدانا ئیفێکتا 3D بۆ لۆگۆیێ مەزن
     mainLogoCircle.classList.remove("flip-3d");
-    void mainLogoCircle.offsetWidth; // ریفرێشکرنا ئەنیمەیشنێ
+    void mainLogoCircle.offsetWidth; 
     mainLogoCircle.classList.add("flip-3d");
 
-    // گۆڕینا داتا و تێکستان پشتی نیڤا زڤڕینێ (دا سروشتی تر دیار بیت)
     setTimeout(() => {
         mainIconContainer.innerHTML = `<svg viewBox="0 0 24 24">${plat.svg}</svg>`;
         mainTitle.innerText = plat.name;
@@ -142,7 +188,6 @@ function switchPlatform(platId, btnElement) {
         textInput.placeholder = plat.placeholder;
     }, 200);
 
-    // گۆڕینا جۆرێ لاکێشێ ب لۆژیک
     if (plat.type === "phone") {
         phoneInputSection.style.display = "block";
         textInputSection.style.display = "none";
@@ -154,6 +199,26 @@ function switchPlatform(platId, btnElement) {
     }
 }
 
+// 4. ئەنیمەیشنا پەقیشکێن ئاڤێ ب بەردەوامی
+function spawnBubbles() {
+    const container = document.getElementById("bubblesContainer");
+    if (!container) return;
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    
+    // قەبارە و ئاراستەیێ هەڕەمەکی
+    let size = Math.random() * 8 + 4;
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
+    bubble.style.setProperty('--dx', `${(Math.random() - 0.5) * 60}px`);
+    bubble.style.animationDuration = `${1 + Math.random() * 0.8}s`;
+
+    container.appendChild(bubble);
+    setTimeout(() => bubble.remove(), 1800);
+}
+setInterval(spawnBubbles, 250); // هەر 250 ملی‌چرکە پەقیشکەک دەردکەڤیت
+
+// 5. کارێن داتایێن لاکێشێ
 function populateCountries() {
     countries.forEach(country => {
         let option = document.createElement("option");
@@ -166,22 +231,15 @@ function populateCountries() {
 }
 
 countrySelect.addEventListener("change", function() {
-    if (this.value !== "unknown") {
-        countryCodeInput.value = this.value;
-    } else {
-        countryCodeInput.value = ""; 
-        countryCodeInput.focus();
-    }
+    if (this.value !== "unknown") countryCodeInput.value = this.value;
+    else { countryCodeInput.value = ""; countryCodeInput.focus(); }
 });
 
 countryCodeInput.addEventListener("input", function() {
     this.value = this.value.replace(/[^0-9]/g, '');
     let found = false;
     for (let i = 0; i < countries.length; i++) {
-        if (countries[i].code === this.value) {
-            countrySelect.value = this.value;
-            found = true; break;
-        }
+        if (countries[i].code === this.value) { countrySelect.value = this.value; found = true; break; }
     }
     if (!found && this.value !== "") countrySelect.value = "unknown";
 });
@@ -198,28 +256,18 @@ function executeAction() {
     if (plat.type === "phone") {
         let code = countryCodeInput.value.trim();
         let number = phoneInput.value.trim();
-
         if (code === "" || number.length < 5) {
-            phoneGroup.classList.remove("error");
-            void phoneGroup.offsetWidth;
-            phoneGroup.classList.add("error");
-            phoneInput.focus();
+            phoneGroup.classList.remove("error"); void phoneGroup.offsetWidth; phoneGroup.classList.add("error"); phoneInput.focus();
         } else {
-            const url = plat.baseUrl + code + number;
-            window.open(url, '_blank', 'noopener,noreferrer');
+            window.open(plat.baseUrl + code + number, '_blank', 'noopener,noreferrer');
         }
     } else {
         let textVal = textInput.value.trim();
         if (textVal.startsWith("@")) textVal = textVal.substring(1);
-
         if (textVal === "") {
-            textGroup.classList.remove("error");
-            void textGroup.offsetWidth;
-            textGroup.classList.add("error");
-            textInput.focus();
+            textGroup.classList.remove("error"); void textGroup.offsetWidth; textGroup.classList.add("error"); textInput.focus();
         } else {
-            const url = plat.baseUrl + textVal;
-            window.open(url, '_blank', 'noopener,noreferrer');
+            window.open(plat.baseUrl + textVal, '_blank', 'noopener,noreferrer');
         }
     }
 }
@@ -229,7 +277,7 @@ phoneInput.addEventListener("keypress", e => { if (e.key === "Enter") executeAct
 textInput.addEventListener("keypress", e => { if (e.key === "Enter") executeAction(); });
 
 window.onload = () => {
-    setupPlatforms();
+    setupDial();
     populateCountries();
     mainIconContainer.innerHTML = `<svg viewBox="0 0 24 24">${platformsData['whatsapp'].svg}</svg>`;
 };
