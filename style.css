@@ -30,196 +30,114 @@ body {
     background-image: radial-gradient(circle at 50% 0%, var(--theme-light) 0%, transparent 70%);
     transition: background 0.8s ease;
     text-rendering: optimizeLegibility;
-    overflow-x: hidden; /* ڕێگریکرن ل سکرۆلا چەپ و ڕاست د مۆبایلێ دا */
+    overflow-x: hidden; 
 }
 
-/* =========================================
-   دیزاینا بارانا ئایکۆنان ل پشتەوە
-========================================= */
+/* ئیفێکتا بارانێ */
 .rain-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none; /* دا کو کلیک ل سەر نەکرێت و بێزارکەر نەبیت */
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    z-index: 0; overflow: hidden; pointer-events: none; 
 }
 
 .rain-icon {
-    position: absolute;
-    top: -60px;
-    opacity: 0;
+    position: absolute; top: -60px; opacity: 0;
     animation: fallDown linear forwards;
 }
 
 .rain-icon svg {
-    width: 100%;
-    height: 100%;
-    fill: var(--theme-main);
+    width: 100%; height: 100%; fill: var(--theme-main);
     filter: drop-shadow(0 5px 15px var(--theme-shadow));
 }
 
 @keyframes fallDown {
     0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
-    10% { opacity: 0.25; } /* کەمەک ڕوونە دا چاڤ نەئێشیت */
+    10% { opacity: 0.25; }
     80% { opacity: 0.25; }
     100% { transform: translateY(110vh) rotate(360deg) scale(1.3); opacity: 0; }
 }
 
-/* =========================================
-   دیزاینا کارتێ سەرەکی دگەل شووشەیێ ڕوون
-========================================= */
+/* کارتێ سەرەکی */
 .app-container {
-    background: rgba(255, 255, 255, 0.88); /* ڕەنگەکێ نیڤ-ڕوون دا باران ل پشت دیار بیت */
-    backdrop-filter: blur(12px); /* ئیفێکتا شووشەیی */
-    -webkit-backdrop-filter: blur(12px);
-    width: 100%;
-    max-width: 460px;
-    min-height: 90vh; 
-    border-radius: 30px;
-    padding: 35px 25px 20px 25px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    width: 100%; max-width: 460px; min-height: 90vh; 
+    border-radius: 30px; padding: 35px 25px 20px 25px;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1), 0 10px 15px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-    text-align: center;
-    position: relative;
-    z-index: 10; /* پێش بارانێ بکەڤیت */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    text-align: center; position: relative; z-index: 10; 
+    display: flex; flex-direction: column; justify-content: center;
 }
 
 .top-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 14px;
+    position: absolute; top: 0; left: 0; width: 100%; height: 14px;
     background: linear-gradient(90deg, var(--theme-dark), var(--theme-main), var(--theme-dark));
-    background-size: 200% 200%;
-    animation: gradientMove 3s ease infinite;
-    transition: background 0.5s ease;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
+    background-size: 200% 200%; animation: gradientMove 3s ease infinite;
+    transition: background 0.5s ease; border-top-left-radius: 30px; border-top-right-radius: 30px;
 }
 
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+@keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-/* =========================================
-   دیزاینا هەلبژارتنا پلاتفۆرمان (وەک بەرێ)
-========================================= */
+/* هەلبژاردنا پلاتفۆرمان */
 .platform-selector {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 15px 0 35px 0;
-    background: rgba(248, 249, 250, 0.7);
-    padding: 12px;
-    border-radius: 20px;
-    overflow-x: auto;
-    gap: 12px;
+    display: flex; justify-content: flex-start; align-items: center;
+    margin: 15px 0 35px 0; background: rgba(248, 249, 250, 0.7);
+    padding: 12px; border-radius: 20px; overflow-x: auto; gap: 12px;
     box-shadow: inset 0 3px 6px rgba(0,0,0,0.04);
 }
-
 .platform-selector::-webkit-scrollbar { display: none; }
-
 .platform-btn {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    flex-shrink: 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    background: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px;
+    width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;
+    cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
-
 .platform-btn svg { width: 26px; height: 26px; fill: #9ca3af; transition: all 0.4s ease; }
 .platform-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-.platform-btn.active {
-    background: var(--theme-main);
-    border-color: var(--theme-main);
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 12px 20px var(--theme-shadow);
-}
+.platform-btn.active { background: var(--theme-main); border-color: var(--theme-main); transform: translateY(-5px) scale(1.05); box-shadow: 0 12px 20px var(--theme-shadow); }
 .platform-btn.active svg { fill: var(--text-on-theme); }
 
-/* =========================================
-   لۆگۆیا سەرەکی و پەقیشک
-========================================= */
+/* لۆگۆ و پەقیشک */
 .logo-container { perspective: 1000px; margin-bottom: 20px; z-index: 10; }
-
 .logo-circle {
-    background: linear-gradient(135deg, var(--theme-main), var(--theme-dark));
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    box-shadow: 0 15px 35px var(--theme-shadow), inset 0 -5px 15px rgba(0,0,0,0.2);
-    transition: all 0.6s ease;
-    position: relative;
+    background: linear-gradient(135deg, var(--theme-main), var(--theme-dark)); width: 90px; height: 90px;
+    border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto;
+    box-shadow: 0 15px 35px var(--theme-shadow), inset 0 -5px 15px rgba(0,0,0,0.2); transition: all 0.6s ease; position: relative;
 }
-
-.logo-circle svg {
-    width: 45px;
-    height: 45px;
-    fill: var(--text-on-theme);
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-    position: relative;
-    z-index: 5;
-}
-
-.bubbles-container {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; overflow: visible; z-index: 2;
-}
-
+.logo-circle svg { width: 45px; height: 45px; fill: var(--text-on-theme); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); position: relative; z-index: 5; }
+.bubbles-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 2; }
 .bubble {
-    position: absolute; bottom: 20%; left: 50%;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 50%; opacity: 0;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
-    animation: bubbleRise linear forwards;
+    position: absolute; bottom: 20%; left: 50%; background: rgba(255, 255, 255, 0.8); border-radius: 50%; opacity: 0;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.9); animation: bubbleRise linear forwards;
 }
-
-@keyframes bubbleRise {
-    0% { transform: translate(-50%, 0) scale(0.2); opacity: 0; }
-    20% { opacity: 1; }
-    100% { transform: translate(calc(-50% + var(--dx)), -90px) scale(1.8); opacity: 0; }
-}
-
+@keyframes bubbleRise { 0% { transform: translate(-50%, 0) scale(0.2); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(calc(-50% + var(--dx)), -90px) scale(1.8); opacity: 0; } }
 .flip-3d { animation: flipEffect 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }
-
-@keyframes flipEffect {
-    0% { transform: rotateY(0deg) scale(1); }
-    50% { transform: rotateY(180deg) scale(1.2); box-shadow: 0 25px 50px var(--theme-shadow); }
-    100% { transform: rotateY(360deg) scale(1); }
-}
-
+@keyframes flipEffect { 0% { transform: rotateY(0deg) scale(1); } 50% { transform: rotateY(180deg) scale(1.2); box-shadow: 0 25px 50px var(--theme-shadow); } 100% { transform: rotateY(360deg) scale(1); } }
 h1 { color: var(--text-dark); font-size: 26px; font-weight: 900; margin: 0 0 10px 0; transition: color 0.4s ease; }
 p { color: var(--text-gray); font-size: 15px; margin: 0 0 25px 0; line-height: 1.6; }
 
 /* =========================================
-   دیزاینا فۆرم و دوگمە
+   چارەسەریا ڕێکخستنا خانەیان (Spacing & Layout)
 ========================================= */
-.form-container { display: flex; flex-direction: column; gap: 18px; margin-bottom: 25px; }
-.row { display: flex; gap: 12px; position: relative; }
+.form-container { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 22px; /* بۆشایا د ناڤبەرا ڕێزان مەزنتر لێهات */
+    margin-bottom: 30px; 
+}
+.row { 
+    display: flex; 
+    gap: 15px; /* بۆشایا د ناڤبەرا خانەیێن تەنیشت یەک مەزنتر لێهات */
+    position: relative; 
+}
 
 .input-box {
-    background: rgba(244, 245, 247, 0.8);
-    border: 2px solid transparent; border-radius: 16px; display: flex; align-items: center;
-    transition: all 0.3s ease; box-shadow: inset 0 3px 5px rgba(0,0,0,0.05); overflow: hidden;
+    background: rgba(244, 245, 247, 0.95);
+    border: 2px solid transparent; 
+    border-radius: 18px; 
+    display: flex; 
+    align-items: center;
+    transition: all 0.3s ease; 
+    box-shadow: inset 0 3px 5px rgba(0,0,0,0.05); 
+    overflow: hidden;
+    min-height: 62px; /* ڕێگری دکەت ل چوونە سەر ئێک و قەبارەیەکێ جێگیر ددەتێ */
 }
 
 .input-box:focus-within {
@@ -227,19 +145,30 @@ p { color: var(--text-gray); font-size: 15px; margin: 0 0 25px 0; line-height: 1
     box-shadow: 0 0 0 5px var(--theme-light), inset 0 2px 4px rgba(0,0,0,0.02);
 }
 
-.select-box { flex: 2; }
-select { width: 100%; padding: 16px 12px; border: none; background: transparent; font-size: 16px; font-weight: 700; color: var(--text-dark); outline: none; cursor: pointer; }
+.select-box { flex: 2.5; } /* پانتاییەکا باشتر بۆ لیستا وەلاتان */
+select { 
+    width: 100%; 
+    padding: 0 15px; 
+    border: none; 
+    background: transparent; 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: var(--text-dark); 
+    outline: none; 
+    cursor: pointer; 
+    height: 100%;
+}
 
-.code-box { flex: 1; padding: 0 10px; justify-content: center; }
+.code-box { flex: 1; padding: 0 10px; justify-content: center; min-width: 90px; }
 .plus-sign { font-weight: 900; color: var(--theme-main); font-size: 20px; transition: color 0.4s ease; }
-.code-box input { width: 100%; border: none; background: transparent; padding: 16px 5px; font-size: 18px; font-weight: 700; color: var(--text-dark); outline: none; }
+.code-box input { width: 100%; border: none; background: transparent; padding: 0 5px; font-size: 18px; font-weight: 700; color: var(--text-dark); outline: none; height: 100%; text-align: left;}
 
 .phone-box { width: 100%; }
-.phone-box input { width: 100%; border: none; background: transparent; padding: 18px; font-size: 20px; font-weight: 700; color: var(--text-dark); outline: none; letter-spacing: 1.5px; }
+.phone-box input { width: 100%; border: none; background: transparent; padding: 0 20px; font-size: 22px; font-weight: 700; color: var(--text-dark); outline: none; letter-spacing: 1.5px; height: 100%; }
 
 .error-msg {
     color: var(--error-color); font-size: 13px; font-weight: 700;
-    position: absolute; bottom: -22px; left: 0; right: 0; opacity: 0; transition: opacity 0.3s;
+    position: absolute; bottom: -24px; left: 0; right: 0; opacity: 0; transition: opacity 0.3s;
 }
 
 .input-box.error { border-color: var(--error-color); background: #fff0f0; animation: shake3D 0.5s ease-in-out; }
@@ -253,8 +182,7 @@ select { width: 100%; padding: 16px 12px; border: none; background: transparent;
 }
 
 .btn-submit {
-    background: linear-gradient(135deg, var(--theme-main), var(--theme-dark));
-    color: var(--text-on-theme);
+    background: linear-gradient(135deg, var(--theme-main), var(--theme-dark)); color: var(--text-on-theme);
     border: none; width: 100%; padding: 18px; font-size: 20px; font-weight: 900;
     border-radius: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 12px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -266,18 +194,12 @@ select { width: 100%; padding: 16px 12px; border: none; background: transparent;
 .btn-submit svg { width: 24px; height: 24px; fill: var(--text-on-theme); transition: transform 0.4s ease; }
 .btn-submit:hover svg { transform: translateX(-6px) scale(1.1); }
 
-/* =========================================
-   فوتەرێ ل خوارێ (RGB Text)
-========================================= */
+/* فوتەرێ RGB Text */
 .footer { margin-top: auto; padding-top: 25px; font-size: 14px; font-weight: 700; color: var(--text-gray); }
 
 .rgb-text {
     background: linear-gradient(270deg, #ff0000, #ff7f00, #eed202, #00ff00, #0000ff, #4b0082, #9400d3, #ff0000);
-    background-size: 800% 100%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: rainbowAnim 5s linear infinite;
-    font-weight: 900; text-decoration: none; font-size: 15px; margin-right: 5px;
+    background-size: 800% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: rainbowAnim 5s linear infinite; font-weight: 900; text-decoration: none; font-size: 15px; margin-right: 5px;
 }
-
 @keyframes rainbowAnim { 0% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
