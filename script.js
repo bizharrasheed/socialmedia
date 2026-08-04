@@ -92,7 +92,6 @@ const phoneGroup = document.getElementById("phoneGroup");
 const textGroup = document.getElementById("textGroup");
 const submitBtn = document.getElementById("submitBtn");
 
-// 1. دانانا لیستا ئاسۆیی یا پلاتفۆرمان
 function setupPlatforms() {
     Object.values(platformsData).forEach(plat => {
         let btn = document.createElement("button");
@@ -104,7 +103,6 @@ function setupPlatforms() {
     });
 }
 
-// 2. گۆڕینا پلاتفۆرمی و لڤین
 function switchPlatform(platId, btnElement) {
     if(activePlatform === platId) return; 
     activePlatform = platId;
@@ -144,7 +142,6 @@ function switchPlatform(platId, btnElement) {
     }
 }
 
-// 3. لۆژیکا بارانێ (Rain Effect)
 function spawnRain() {
     const container = document.getElementById("rainContainer");
     if (!container) return;
@@ -154,10 +151,9 @@ function spawnRain() {
     icon.className = "rain-icon";
     icon.innerHTML = `<svg viewBox="0 0 24 24">${plat.svg}</svg>`;
     
-    // ب شێوەیەکێ هەڕەمەکی (Random) دروستکرنا بارانێ
-    const size = Math.random() * 25 + 15; // 15px تا 40px
-    const left = Math.random() * 95; // 0% تا 95%
-    const duration = Math.random() * 4 + 4; // 4 چرکە تا 8 چرکە (دا خاڤ بیت)
+    const size = Math.random() * 25 + 15; 
+    const left = Math.random() * 95; 
+    const duration = Math.random() * 4 + 4; 
     const delay = Math.random() * 2;
     
     icon.style.width = `${size}px`;
@@ -167,13 +163,10 @@ function spawnRain() {
     icon.style.animationDelay = `${delay}s`;
     
     container.appendChild(icon);
-    
-    // ڕەشکرنا ئایکۆنی پشتی گەهشتیە بنێ شاشێ
     setTimeout(() => icon.remove(), (duration + delay) * 1000);
 }
-setInterval(spawnRain, 400); // هەر 400 ملی‌چرکە دڵۆپەکا بارانێ چێدکەت
+setInterval(spawnRain, 400); 
 
-// 4. ئەنیمەیشنا پەقیشکێن ئاڤێ ب بەردەوامی
 function spawnBubbles() {
     const container = document.getElementById("bubblesContainer");
     if (!container) return;
@@ -189,7 +182,6 @@ function spawnBubbles() {
 }
 setInterval(spawnBubbles, 250); 
 
-// 5. کارێن داتایێن لاکێشێ و وەلاتان
 function populateCountries() {
     countries.forEach(country => {
         let option = document.createElement("option");
