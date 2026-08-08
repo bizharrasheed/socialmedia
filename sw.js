@@ -1,4 +1,4 @@
-const CACHE_NAME = "social-hub-rain-v7"; // گوهارتنا ڤێرژنی بۆ پاقژکرنا داتایێن کەڤن
+const CACHE_NAME = "social-media-v14"; 
 const assets = [
   "./",
   "./index.html",
@@ -7,16 +7,14 @@ const assets = [
   "./manifest.json"
 ];
 
-// ئینستالکرنا کاشێ نووی
 self.addEventListener("install", installEvent => {
   installEvent.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       return cache.addAll(assets);
-    }).then(() => self.skipWaiting()) // زۆرەملێ کارپێکرنا ڤێرژنێ نووی
+    }).then(() => self.skipWaiting()) 
   );
 });
 
-// ڕەشکرنا کاشێ کەڤن هەر دەمێ ئەپلیکەیشن ڤەبوو
 self.addEventListener("activate", activateEvent => {
   activateEvent.waitUntil(
     caches.keys().then(keys => {
@@ -27,12 +25,10 @@ self.addEventListener("activate", activateEvent => {
   );
 });
 
-// ستراتیژیا (Network First): دەستپێکێ ل ئینتەرنێتێ دگەڕیت، ئەگەر نەبوو پاشی دچیتە سەر کاشێ
 self.addEventListener("fetch", fetchEvent => {
   fetchEvent.respondWith(
     fetch(fetchEvent.request)
       .then(networkResponse => {
-        // ئەگەر ئینتەرنێت هەبوو، دیزاینێ نووی سەیڤ بکە د کاشی دا و پیشان بدە
         const responseClone = networkResponse.clone();
         caches.open(CACHE_NAME).then(cache => {
           cache.put(fetchEvent.request, responseClone);
@@ -40,7 +36,6 @@ self.addEventListener("fetch", fetchEvent => {
         return networkResponse;
       })
       .catch(() => {
-        // ئەگەر ئینتەرنێت نەبوو، دیزاینا کەڤن یا سەیڤکری پیشان بدە
         return caches.match(fetchEvent.request);
       })
   );
