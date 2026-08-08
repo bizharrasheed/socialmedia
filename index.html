@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- ڕێگریکرن ل سەیڤکرنا زۆرەملێ یا براوسەری دا کو زوی ئاپدێت ببیت -->
+    <!-- ڕێگریکرن ل سەیڤکرنا زۆرەملێ دا ئاپدێتا نوی ڕاستەوخۆ کار بکەت -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
-    <title>ناوەندا پەیوەندیان - دیزاینا زیندی</title>
+    <title>Social Media</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#25D366" id="themeColorMeta">
@@ -16,12 +16,18 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="پەیوەندی 3D">
+    <meta name="apple-mobile-web-app-title" content="Social Media">
     <link rel="apple-touch-icon" href="https://i.postimg.cc/FHNCZRbx/7C5085D4-2C87-4EE0-B89A-B5C6BBFADA74.jpg">
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- سیستەمێ ئاگەهدارکرنێ (Toast) -->
+    <div id="toastNotification" class="toast">
+        <svg viewBox="0 0 24 24" id="toastIcon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <span id="toastMessage">پەیام</span>
+    </div>
 
     <!-- ئیفێکتا بارانا ئایکۆنان ل پشتەوە -->
     <div class="rain-container" id="rainContainer"></div>
@@ -30,13 +36,14 @@
         <!-- خەتا سەری یا تەمام -->
         <div class="top-bar" id="topBar"></div>
         
-        <!-- لیستا ئایکۆنان -->
+        <!-- لیستا پلاتفۆرمان -->
         <div class="platform-selector" id="platformSelector">
             <!-- ب ڕێیا JS دێ هێنە دروستکرن -->
         </div>
 
-        <!-- لۆگۆیا سەرەکی دگەل پەقیشکان -->
+        <!-- لۆگۆیا سەرەکی دگەل پەقیشکان و ڕووناهیا Pulse -->
         <div class="logo-container">
+            <div class="logo-glow" id="logoGlow"></div>
             <div class="logo-circle" id="mainLogoCircle">
                 <div class="bubbles-container" id="bubblesContainer"></div>
                 <div id="mainIconContainer"></div>
@@ -47,20 +54,22 @@
         <p id="mainDesc">ژمارێ بنڤیسە بێی سەیڤکرن، ڕاستەوخۆ دێ چات ڤەبیت.</p>
         
         <div class="form-container">
-            <!-- بەشێ ژمارا مۆبایلێ -->
+            <!-- بەشێ ژمارا مۆبایلێ و کۆدێ وەلاتی -->
             <div id="phoneInputSection">
+                <!-- ڕێزا ئێکێ: لیستا وەلاتان ب تەمامی -->
                 <div class="row">
                     <div class="input-box select-box">
                         <select id="countrySelect"></select>
                     </div>
-                    <div class="input-box code-box" dir="ltr">
-                        <span class="plus-sign" id="plusSign">+</span>
-                        <input type="tel" id="countryCodeInput" placeholder="964">
-                    </div>
                 </div>
+                <!-- ڕێزا دووێ: ژمارا مۆبایلێ ل ڕاستێ و کۆد ل چەپێ -->
                 <div class="row">
                     <div class="input-box phone-box" dir="ltr" id="phoneGroup">
                         <input type="tel" id="phoneInput" placeholder="750 364 4666" autocomplete="off">
+                    </div>
+                    <div class="input-box code-box" dir="ltr">
+                        <span class="plus-sign" id="plusSign">+</span>
+                        <input type="tel" id="countryCodeInput" placeholder="964">
                     </div>
                     <span class="error-msg" id="phoneErrorMsg">هیڤییە ژمارەیەکا دروست بنڤیسە!</span>
                 </div>
@@ -77,27 +86,29 @@
             </div>
         </div>
         
+        <!-- دوگمەیا سەرەکی -->
         <button class="btn-submit" id="submitBtn">
-            <span id="btnText">ڤەکرنا چاتێ</span>
-            <svg viewBox="0 0 24 24" id="btnIcon">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-            </svg>
+            <span id="btnText">ڤەکرنا چاتێ واتسئاپی</span>
+            <div id="btnIconWrapper">
+                <svg viewBox="0 0 24 24" id="btnIcon">
+                    <path id="sendIconPath" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </div>
         </button>
 
         <!-- ناڤێ تە ب دیزاینا RGB -->
         <div class="footer">
-            Development By : 
+            <span id="devText">Divelopment by :</span> 
             <a href="https://bizhar-cloud.github.io/BizharRasheed/" target="_blank" class="rgb-text">Bizhar Rasheed</a>
         </div>
     </div>
 
     <script src="script.js"></script>
     <script>
-        // تۆمارکرن و ئاپدێتکرنا زۆرەملێ بۆ Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').then(reg => {
-                    reg.update(); // ئەڤە دکەت کو هەر دەمێ ڤەبوو ل نووترین ڤێرژن بگەڕیێت
+                    reg.update();
                 }).catch(err => console.log('SW failed: ', err));
             });
         }
