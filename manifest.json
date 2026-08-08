@@ -1,7 +1,7 @@
 {
-  "name": "ناوەندا پەیوەندیان 3D",
-  "short_name": "پەیوەندی",
-  "description": "پەیوەندیێ ب هەر کەسەکی بکە ل سەر هەمی پلاتفۆرمان.",
+  "name": "Social Media",
+  "short_name": "Social Media",
+  "description": "پەیوەندیێ ب هەر کەسەکی بکە ل سەر هەمی پلاتفۆرمان ب دیزاینەکا پرۆفیشناڵ.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f3f4f6",
@@ -21,4 +21,3 @@
     }
   ]
 }
-
